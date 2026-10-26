@@ -302,12 +302,6 @@ FactoryMind-AI/
 
 ---
 
-## 👥 Team Contribution
-
-Developed as a hackathon project covering synthetic data generation, ML/DL model development, explainability, root-cause analysis, maintenance recommendations, and interactive dashboard integration.
-
----
-
 ## 🎯 Vision
 
 **Move from reactive maintenance to predictive, explainable, and data-driven manufacturing.**
