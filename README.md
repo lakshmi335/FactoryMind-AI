@@ -1,207 +1,278 @@
-# FactoryMind AI
-### Intelligent Predictive Maintenance & Production Optimization Platform
+# 🏭 FactoryMind AI
+### Intelligent Predictive Maintenance & Production Optimization
 
-Built for a 24-hour hackathon. FactoryMind AI turns raw machine sensor and
-production data into predictions, explanations, and concrete maintenance
-actions — following the flow **DETECT → PREDICT → EXPLAIN → RECOMMEND**.
+**Turning machine data into smarter maintenance decisions.**
+
+FactoryMind AI is an AI-powered industrial analytics platform that predicts machine failures, detects abnormal sensor behavior, forecasts production trends, and recommends preventive maintenance actions through an interactive dashboard.
+
+**DETECT → PREDICT → EXPLAIN → RECOMMEND**
+
+> Built for a 24-hour hackathon | Machine Learning · Deep Learning · Explainable AI
 
 ---
 
-## Problem Statement
+## 🚀 Project Highlights
 
-Manufacturing downtime is expensive and often preventable. Most factories
-react to failures after they happen instead of predicting and preventing
-them. Teams also struggle to trust "black box" AI predictions without an
-explanation of *why* a machine is flagged as at-risk, and without a clear,
-actionable next step.
-
-## Solution
-
-FactoryMind AI combines classical ML, deep learning, and explainable AI into
-one platform that:
-
-1. Predicts machine failure risk from live sensor readings
-2. Detects abnormal sensor behavior with an LSTM Autoencoder
-3. Predicts production output and efficiency
-4. Forecasts future production trends with a GRU model
-5. Computes a single 0–100 machine health score
-6. Explains *why* a machine is at risk using SHAP
-7. Performs rule-based root cause analysis
-8. Generates concrete maintenance recommendations
-9. Lets users simulate "what-if" machine conditions and watch predictions update live
-10. Presents everything in an interactive industrial dashboard
-
-## Key Features
-
-| Capability | Model | Output |
+| Feature | Technology | What It Does |
 |---|---|---|
-| Failure prediction | XGBoost classifier | Failure probability, risk level (LOW/MEDIUM/HIGH) |
-| Anomaly detection | LSTM Autoencoder | Anomaly score %, reconstruction error, status |
-| Production prediction | XGBoost regressor | Predicted units, efficiency % |
-| Production forecasting | GRU | 3-day-ahead forecast, trend direction |
-| Machine health score | Rule-based blend of all model outputs | 0–100 score, Healthy/Warning/Critical |
-| Explainability | SHAP | Top risk factors, global feature importance |
-| Root cause analysis | Rule-based (sensor thresholds) | Detected issues, probable cause |
-| Recommendations | Rule-based engine | Severity, action, reason |
-| Simulation | All models, live | Interactive sliders drive real-time re-prediction |
+| ⚠️ Failure Prediction | XGBoost Classifier | Estimates machine failure probability and risk level |
+| 🔍 Anomaly Detection | LSTM Autoencoder | Identifies unusual machine sensor patterns |
+| 📈 Production Prediction | XGBoost Regressor | Estimates production output and efficiency |
+| 🔮 Production Forecasting | GRU | Forecasts production trends for the next 3 days |
+| ❤️ Machine Health Score | Rule-Based Scoring | Summarizes machine condition on a 0–100 scale |
+| 🧠 Explainable AI | SHAP | Identifies important factors behind failure predictions |
+| 🛠️ Root Cause Analysis | Rule-Based Engine | Highlights potential machine issues |
+| ✅ Maintenance Recommendations | Recommendation Engine | Suggests actionable maintenance steps |
+| 🎛️ What-If Simulation | Interactive Dashboard | Updates predictions when machine conditions change |
 
-## System Architecture
+---
 
+## 💡 Problem We Solve
+
+Unexpected machine failures cause production delays, maintenance costs, and operational losses. Traditional monitoring systems may identify a problem only after performance has deteriorated.
+
+FactoryMind AI helps address this challenge by combining predictive models, anomaly detection, explainability, and actionable recommendations in a single platform.
+
+### Our Approach
+
+**1. DETECT** — Identify unusual machine behavior from sensor readings.
+
+**2. PREDICT** — Estimate failure risk and production performance.
+
+**3. EXPLAIN** — Understand the factors contributing to a potential failure.
+
+**4. RECOMMEND** — Provide practical maintenance actions based on detected conditions.
+
+---
+
+## 🏗️ System Architecture
+
+```text
+             MACHINE & PRODUCTION DATA
+                         │
+                         ▼
+                  DATA PREPROCESSING
+                         │
+          ┌──────────────┼──────────────┐
+          ▼              ▼              ▼
+     XGBoost          LSTM             GRU
+   Failure Model   Autoencoder     Forecast Model
+          │              │              │
+          ▼              ▼              ▼
+     Failure Risk    Anomaly Score   Future Output
+          │              │              │
+          └──────────────┼──────────────┘
+                         ▼
+                 EXPLAINABLE AI (SHAP)
+                         │
+                         ▼
+                 ROOT CAUSE ANALYSIS
+                         │
+                         ▼
+              HEALTH SCORE & ACTIONS
+                         │
+                         ▼
+                STREAMLIT DASHBOARD
 ```
-Machine Sensor Data (CSV)
-        │
-        ▼
-  Preprocessing (src/preprocessing.py)
-        │
-        ├──► Failure Model (XGBoost)        ──► Failure Probability / Risk Level
-        ├──► Anomaly Model (LSTM Autoencoder)──► Anomaly Score / Status
-        ├──► Production Model (XGBoost)      ──► Predicted Output / Efficiency
-        └──► Forecast Model (GRU)            ──► Future Production Trend
-                        │
-                        ▼
-        Explainability (SHAP) ──► Top Risk Factors
-                        │
-                        ▼
-        Root Cause Analysis (rule-based)
-                        │
-                        ▼
-        Health Score + Recommendations
-                        │
-                        ▼
-        Streamlit Dashboard (app.py)
-```
 
-## ML Models
+---
 
-- **Failure Prediction**: XGBoost binary classifier over 10 engineered
-  features (temperature, vibration, pressure, speed, torque, tool wear,
-  operating hours, machine age, maintenance count, production load).
-- **Production Prediction**: XGBoost regressor predicting expected
-  production output from the same machine-condition features.
+## 🤖 Machine Learning & Deep Learning
 
-## Deep Learning Models
+### 1. Failure Prediction
+- **Algorithm:** XGBoost Classification
+- Uses machine-condition features such as temperature, vibration, pressure, torque, tool wear, and operating hours.
+- Outputs a failure probability and a LOW, MEDIUM, or HIGH risk category.
 
-- **LSTM Autoencoder** (anomaly detection): trained only on sequences of
-  *normal* sensor behavior. At inference, reconstruction error above a
-  learned threshold (95th percentile of normal validation error) flags an
-  anomaly. Per-sensor reconstruction error shows which sensors drove the
-  anomaly.
-- **GRU Forecaster** (production trend): trained on 14-day sliding windows
-  of daily production history to forecast the next 3 days per machine, with
-  per-machine normalization.
+### 2. Anomaly Detection
+- **Algorithm:** LSTM Autoencoder
+- Learns patterns from normal sensor sequences.
+- Uses reconstruction error to identify abnormal behavior.
+- Highlights sensor-level reconstruction errors to help investigate anomalies.
 
-## Dataset
+### 3. Production Prediction
+- **Algorithm:** XGBoost Regression
+- Predicts expected production output from machine-condition features.
+- Supports production-efficiency analysis.
 
-Synthetic but realistically structured manufacturing data (no public
-dataset licensing concerns), generated by `src/generate_data.py`:
+### 4. Production Forecasting
+- **Algorithm:** GRU Neural Network
+- Uses historical production sequences to forecast the next three days.
+- Supports trend analysis using machine-specific normalization.
 
-- `data/machine_data.csv` — 4,800 sensor snapshots across 12 machines.
-  Failure labels are derived from a real function of sensor state (vibration,
-  tool wear, temperature, torque, operating hours) plus noise — not
-  assigned randomly.
-- `data/production_data.csv` — 120 days of daily production history per
-  machine, with weekly seasonality and per-machine health drift.
-- `data/anomaly_sequences.npz` — 720 sensor sequences (30 timesteps × 5
-  features) with ~16% containing an injected anomalous burst, used to train
-  and evaluate the LSTM Autoencoder.
+### 5. Explainability & Recommendations
+- **SHAP:** Explains the factors contributing to failure predictions.
+- **Root Cause Engine:** Uses sensor thresholds to identify potential issues.
+- **Recommendation Engine:** Converts detected issues into practical maintenance actions.
 
-Missing values and physically impossible readings are cleaned during
-generation (see `generate_data.py` / `preprocessing.py`).
+---
 
-## Model Evaluation
+## 📊 Model Evaluation
 
-All metrics below are computed on held-out test data — nothing is
-fabricated. Reproduce by running the scripts in `src/` or the notebooks in
-`notebooks/`.
+The following are the evaluation metrics reported by the project's current test results.
 
-**Failure Classification (XGBoost)**
-| Metric | Value |
-|---|---|
-| Accuracy | 0.791 |
-| Precision | 0.708 |
-| Recall | 0.693 |
-| F1 Score | 0.700 |
+### Failure Classification
+
+| Metric | Score |
+|---|---:|
+| Accuracy | 79.1% |
+| Precision | 70.8% |
+| Recall | 69.3% |
+| F1 Score | 70.0% |
 | ROC-AUC | 0.876 |
 
-**Production Regression (XGBoost)**
-| Metric | Value |
-|---|---|
+### Production Regression
+
+| Metric | Score |
+|---|---:|
 | MAE | 15.7 units |
 | RMSE | 19.9 units |
 | R² | 0.977 |
 
-**Anomaly Detection (LSTM Autoencoder)**
-| Metric | Value |
-|---|---|
+### Anomaly Detection
+
+| Metric | Score |
+|---|---:|
 | ROC-AUC | 1.00 |
-| Precision | 0.856 |
-| Recall | 1.00 |
-| F1 Score | 0.923 |
+| Precision | 85.6% |
+| Recall | 100% |
+| F1 Score | 92.3% |
 
-**Production Forecasting (GRU)**
-| Metric | Value |
+### Production Forecasting
+
+| Metric | Score |
+|---|---:|
+| Normalized MAE | 0.74 standard deviations |
+
+*Metrics should be interpreted in the context of the project's synthetic dataset and evaluation methodology. The reported anomaly-detection ROC-AUC should be independently validated before making real-world performance claims.*
+
+---
+
+## 🗂️ Dataset
+
+FactoryMind AI currently uses synthetic manufacturing data generated by `src/generate_data.py`.
+
+- **Machine sensor data:** 4,800 sensor snapshots across 12 machines.
+- **Production history:** 120 days of daily production data per machine.
+- **Anomaly sequences:** 720 sequences, each containing 30 timesteps and 5 sensor features.
+
+The generated data includes machine-condition patterns, production seasonality, health drift, and injected anomalies for model development and evaluation.
+
+> **Note:** This is a prototype using synthetic data, not a production-validated industrial monitoring system.
+
+---
+
+## 🖥️ Interactive Dashboard
+
+The Streamlit dashboard provides nine sections:
+
+- 📊 Dashboard
+- 🏭 Machines
+- ⚠️ Predictions
+- 🔍 Anomalies
+- 📈 Production
+- 🧠 Explainability
+- 🛠️ Recommendations
+- 🎛️ Simulation
+- 📉 Model Performance
+
+Users can inspect machine conditions, explore model predictions, investigate potential causes, and simulate changes to sensor readings.
+
+**Screenshots and a live demo link can be added here once the application is deployed.**
+
+---
+
+## 🛠️ Technology Stack
+
+| Category | Technologies |
 |---|---|
-| Normalized MAE | 0.74 (std units) |
+| Programming Language | Python |
+| Machine Learning | XGBoost, Scikit-learn |
+| Deep Learning | TensorFlow, LSTM, GRU |
+| Explainable AI | SHAP |
+| Data Processing | Pandas, NumPy |
+| Visualization | Plotly, Matplotlib |
+| Dashboard | Streamlit |
+| Model Persistence | Joblib, Pickle, Keras |
 
-All of these are also shown live in the dashboard's **Model Performance**
-page, including confusion matrix, ROC curve, and reconstruction error
-distribution.
+---
 
-## Installation
+## ⚙️ Installation & Setup
+
+### Prerequisites
+- Python version compatible with the project's TensorFlow dependencies
+- Git
+- pip
+
+### 1. Clone the Repository
 
 ```bash
-git clone <repo-url>
-cd factorymind-ai
-python3 -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
+git clone https://github.com/lakshmi335/FactoryMind-AI.git
+cd FactoryMind-AI
 ```
 
-## How to Run
+### 2. Create a Virtual Environment
+
+**Windows PowerShell**
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+```
+
+**macOS / Linux**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
 
 ```bash
-# 1. Generate the dataset (creates data/*.csv and data/anomaly_sequences.npz)
-cd src
-python generate_data.py
-
-# 2. Train all models (creates models/*.pkl and models/*.keras)
-python failure_model.py
-python production_model.py
-python anomaly_model.py
-python forecast_model.py
-
-# 3. Launch the dashboard
-cd ..
-streamlit run app.py
+python -m pip install -r requirements.txt
 ```
 
-Open the URL Streamlit prints (default `http://localhost:8501`) and use the
-sidebar to navigate between Dashboard, Machines, Predictions, Anomalies,
-Production, Explainability, Recommendations, Simulation, and Model
-Performance.
+### 4. Launch the Dashboard
 
-To explore the modeling process step by step, open the notebooks in
-`notebooks/` (each mirrors and extends the corresponding `src/` script with
-extra plots).
+If the dataset and trained model files are already included:
 
-## Project Structure
-
+```bash
+python -m streamlit run app.py
 ```
-factorymind-ai/
+
+Open the local URL displayed in your terminal, usually `http://localhost:8501`.
+
+### Optional: Regenerate the Dataset and Train Models
+
+Run these commands only if you want to regenerate the data and model artifacts.
+
+```bash
+python src/generate_data.py
+python src/failure_model.py
+python src/production_model.py
+python src/anomaly_model.py
+python src/forecast_model.py
+python -m streamlit run app.py
+```
+
+**Important:** Regenerating data or retraining models may overwrite existing files. Keep backups if you want to preserve the current evaluation results.
+
+---
+
+## 📁 Project Structure
+
+```text
+FactoryMind-AI/
 ├── data/
 │   ├── machine_data.csv
 │   ├── production_data.csv
 │   └── anomaly_sequences.npz
-├── models/                     # generated by training scripts
+├── models/
 │   ├── failure_model.pkl
 │   ├── production_model.pkl
 │   ├── lstm_autoencoder.keras
 │   ├── forecast_gru.keras
-│   └── *_scaler.pkl, *_eval.pkl
+│   └── supporting scalers and evaluation files
 ├── notebooks/
-│   ├── data_analysis.ipynb
-│   ├── failure_prediction.ipynb
-│   ├── production_prediction.ipynb
-│   └── anomaly_detection.ipynb
 ├── src/
 │   ├── generate_data.py
 │   ├── preprocessing.py
@@ -213,21 +284,32 @@ factorymind-ai/
 │   └── recommendations.py
 ├── app.py
 ├── requirements.txt
-└── README.md
+├── README.md
+└── .gitignore
 ```
 
-## Future Improvements
+---
 
-- Swap synthetic data for a real plant's historian / SCADA export
-- Add per-machine SHAP explanations for the production and anomaly models, not just failure
-- Multi-step LSTM/Transformer forecaster with confidence intervals
-- Persist simulation history and alerts to a database for audit trail
-- Role-based access (operator vs. maintenance engineer vs. plant manager views)
-- Real-time streaming ingestion (Kafka/MQTT) instead of static CSV snapshots
+## 🔮 Future Improvements
 
-## Team Contribution
+- Integrate real industrial sensor data from SCADA or plant historians.
+- Add model explanations for production and anomaly predictions.
+- Introduce forecast confidence intervals.
+- Store prediction history and maintenance alerts.
+- Add role-based dashboards for operators and maintenance engineers.
+- Integrate real-time sensor streams using MQTT or Kafka.
+- Validate model performance on real-world industrial datasets.
 
-Built end-to-end (data generation, ML/DL modeling, explainability,
-recommendation engine, and dashboard) for this hackathon submission.
-#   F a c t o r y M i n d - A I  
- 
+---
+
+## 👥 Team Contribution
+
+Developed as a hackathon project covering synthetic data generation, ML/DL model development, explainability, root-cause analysis, maintenance recommendations, and interactive dashboard integration.
+
+---
+
+## 🎯 Vision
+
+**Move from reactive maintenance to predictive, explainable, and data-driven manufacturing.**
+
+*FactoryMind AI — Detect early. Predict smarter. Maintain better.*
